@@ -1,19 +1,14 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { HiMiniDocumentPlus } from "react-icons/hi2";
 function AddTodo({ onNewItem }) {
-  const [todoname, settodoname] = useState();
-  const [todoDate, settodoDate] = useState();
-  const handleTodoname = (event) => {
-    settodoname(event.target.value);
-  };
-  function handleTodoDate(event) {
-    settodoDate(event.target.value);
-  }
+  const todoNameElement = useRef();
+  const todoDateElement = useRef();
+
   const handleAddItemClicked = (event) => {
     event.preventDefault();
+    const todoname = todoNameElement.current.value;
+    const todoDate = todoDateElement.current.value;
     onNewItem(todoname, todoDate);
-    settodoDate("");
-    settodoname("");
   };
   return (
     <div className="container">
@@ -22,11 +17,11 @@ function AddTodo({ onNewItem }) {
           <input
             type="text"
             placeholder="Enter todo"
-            onChange={handleTodoname}
+            ref={todoNameElement}
           ></input>
         </div>
         <div className="col-sm-4">
-          <input type="date" onChange={handleTodoDate}></input>
+          <input type="date" ref={todoDateElement}></input>
         </div>
         <div className="col-sm-2">
           <button type="submit" className="btn btn-success kg-button">
