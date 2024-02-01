@@ -5,31 +5,32 @@ import "./App.css";
 import TodoItemList from "./components/TodoItemsList";
 import { useState } from "react";
 import Message from "./components/Message";
+import { TodoItemContext } from "./store/todoItemStore";
 function App() {
   const [todoItemList, setToDoItems] = useState([]);
   const handleOnNewItem = (itemName, itemDoDate) => {
-    console.log(`new item added ${itemName} Date${itemDoDate}`);
-    const newTodoItem = [
-      ...todoItemList,
+    setToDoItems((currval) => [
+      ...currval,
       { Name: itemName, doDate: itemDoDate },
-    ];
-    setToDoItems(newTodoItem);
+    ]);
   };
   const handleOnDelete = (todoitemName) => {
     console.log(`you deteted ${todoitemName}`);
     const newItems = todoItemList.filter((item) => item.Name != todoitemName);
     setToDoItems(newItems);
   };
+  const todoitemConntextval = [
+    /*{ Name: "buy ghee", doDate: "today" }*/
+  ];
   return (
-    <center className="todo-container">
-      <AppName></AppName>
-      <AddTodo onNewItem={handleOnNewItem} />
-      <TodoItemList
-        todoItemList={todoItemList}
-        onDeleteClick={handleOnDelete}
-      ></TodoItemList>
-      {todoItemList.length === 0 && <Message></Message>}
-    </center>
+    <TodoItemContext.Provider value={todoItemList}>
+      <center className="todo-container">
+        <AppName></AppName>
+        <AddTodo onNewItem={handleOnNewItem} />
+        <TodoItemList onDeleteClick={handleOnDelete}></TodoItemList>
+        <Message></Message>
+      </center>
+    </TodoItemContext.Provider>
   );
 }
 
