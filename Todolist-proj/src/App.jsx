@@ -8,13 +8,13 @@ import Message from "./components/Message";
 import { TodoItemContext } from "./store/todoItemStore";
 function App() {
   const [todoItemList, setToDoItems] = useState([]);
-  const handleOnNewItem = (itemName, itemDoDate) => {
+  const addNewItem = (itemName, itemDoDate) => {
     setToDoItems((currval) => [
       ...currval,
       { Name: itemName, doDate: itemDoDate },
     ]);
   };
-  const handleOnDelete = (todoitemName) => {
+  const deleteItem = (todoitemName) => {
     console.log(`you deteted ${todoitemName}`);
     const newItems = todoItemList.filter((item) => item.Name != todoitemName);
     setToDoItems(newItems);
@@ -23,11 +23,17 @@ function App() {
     /*{ Name: "buy ghee", doDate: "today" }*/
   ];
   return (
-    <TodoItemContext.Provider value={todoItemList}>
+    <TodoItemContext.Provider
+      value={{
+        todoItemList: todoItemList,
+        addNewItem: addNewItem,
+        deleteItem: deleteItem,
+      }}
+    >
       <center className="todo-container">
         <AppName></AppName>
-        <AddTodo onNewItem={handleOnNewItem} />
-        <TodoItemList onDeleteClick={handleOnDelete}></TodoItemList>
+        <AddTodo />
+        <TodoItemList></TodoItemList>
         <Message></Message>
       </center>
     </TodoItemContext.Provider>
